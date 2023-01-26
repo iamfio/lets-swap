@@ -1,10 +1,7 @@
 import NextAuth from 'next-auth/next'
 import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { PrismaClient } from '@prisma/client'
-// import prisma from '@/lib/configs/prismadb'
-
-const prisma = new PrismaClient()
+import prisma from '@/lib/configs/prismadb'
 
 export default NextAuth({
   session: {
