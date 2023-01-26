@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
+import LoginButton from '@/components/ui/LoginButton'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,6 +19,9 @@ export default function Home() {
         <p>
           It's a perfect place to exchange things you're not using right now.
           Right here.
+        </p>
+        <p>
+          <LoginButton />
         </p>
       </main>
     </>
