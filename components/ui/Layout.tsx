@@ -1,4 +1,8 @@
+import { Inter, Montserrat } from '@next/font/google'
 import SiteHeader from './SiteHeader'
+
+const inter = Inter({ subsets: ['latin'], display: 'auto' })
+const monsterrat = Montserrat({ subsets: ['latin'], display: 'auto' })
 
 type ChildrenProps = {
   children: string | JSX.Element | JSX.Element[] | '() => JSX.Element'
@@ -6,7 +10,7 @@ type ChildrenProps = {
 
 const Layout = ({ children }: ChildrenProps) => {
   return (
-    <div  className=' h-screen'>
+    <div className={`${monsterrat.className} h-screen`}>
       <SiteHeader />
       <div className="p-2">
         <main>{children}</main>
