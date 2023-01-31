@@ -12,7 +12,7 @@ const Layout = ({ children }: ChildrenProps) => {
   return (
     <div className={`${monsterrat.className} h-screen`}>
       <SiteHeader />
-      <div className="p-2">
+      <div className="sm:p-4">
         <main>{children}</main>
       </div>
     </div>

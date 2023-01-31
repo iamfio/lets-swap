@@ -1,12 +1,49 @@
-import LoginButton from '@/components/ui/LoginButton'
 import { Inter, Montserrat } from '@next/font/google'
-import { NextPage } from 'next'
+import { PrismaClient, Profile } from '@prisma/client'
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
+import { getSession } from 'next-auth/react'
 import Head from 'next/head'
 
+import type { Session } from 'next-auth'
+import CreateProfile from '@/components/profile/CreateProfile'
 const inter = Inter({ subsets: ['latin'], display: 'auto' })
 const monsterrat = Montserrat({ subsets: ['latin'], display: 'auto' })
 
-const Home: NextPage = (): JSX.Element => {
+type IndexProps = {
+  session: Session
+  profile: Profile
+}
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const prisma = new PrismaClient()
+
+  const session = await getSession(context)
+
+  if (!session) {
+    return {
+      props: {
+        session: null,
+      },
+    }
+  }
+
+  const profile = await prisma.profile.findUnique({
+    where: {
+      userId: session.user?.id!,
+    },
+  })
+
+  return {
+    props: {
+      session,
+      profile,
+    },
+  }
+}
+
+const Home: NextPage<IndexProps> = ({ session, profile }): JSX.Element => {
   return (
     <>
       <Head>
@@ -15,15 +52,27 @@ const Home: NextPage = (): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className={inter.className}>
-        <h1 className="text-3xl">Let's Swap!</h1>
-        <p>
-          It's a perfect place to exchange things you're not using right now.
-          Right here.
-        </p>
-        <p>
-          <LoginButton />
-        </p>
+
+      <div className={`${monsterrat.className} flex flex-col items-center`}>
+        <h1 className="m-6 text-3xl">Let's Swap!</h1>
+
+        {!session && (
+          <p className="">
+            It's a perfect place to exchange things you're not using right now.
+            Right here.
+          </p>
+        )}
+
+        {!profile && session && (
+          <div className="w-96">
+            <div className="flex justify-center m-4">
+              <p className="font-semibold">
+                Before we begin, Create Your Profile
+              </p>
+            </div>
+            <CreateProfile />
+          </div>
+        )}
       </div>
     </>
   )

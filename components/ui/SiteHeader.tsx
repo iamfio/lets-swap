@@ -19,7 +19,7 @@ const UserProfileMenu: FC<UserProfileProps> = ({
     <div className="flex items-center gap-3 mr-3">
       <div>
         <Link href=''>
-          <span className='px-3 py-2 text-lg font-medium border rounded-lg text-primary hover:text-white hover:bg-primary border-primary'>New!</span>
+          <span className='btn btn-outline btn-primary'>New</span>
         </Link>
       </div>
       <div className="dropdown dropdown-end">
@@ -44,7 +44,7 @@ const UserProfileMenu: FC<UserProfileProps> = ({
           </li>
           <li>
             <button type="button" onClick={() => signOut()}>
-              Logout
+              Sign Out
             </button>
           </li>
         </ul>
