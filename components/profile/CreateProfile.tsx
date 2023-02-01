@@ -30,9 +30,10 @@ const CreateProfile = (): JSX.Element => {
     }
 
     const res = await axios(config)
+    const profile = res.data
 
     if (res.status === 201) {
-      return router.push('/')
+      return router.push(`/u/${profile.username}`)
     }
   }
 
@@ -76,8 +77,8 @@ const CreateProfile = (): JSX.Element => {
             <input
               type="text"
               className="w-full max-w-xs m-1 input input-bordered"
-              placeholder="Place"
-              {...register('place', { required: true })}
+              placeholder="City"
+              {...register('city', { required: true })}
             />
 
             <input
@@ -94,10 +95,7 @@ const CreateProfile = (): JSX.Element => {
               {...register('country', { required: true })}
             />
 
-            <button
-              type="button"
-              className="mt-4 btn btn-outline btn-primary btn-wide"
-            >
+            <button className="mt-4 btn btn-outline btn-primary btn-wide">
               Create Profile
             </button>
           </div>

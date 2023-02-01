@@ -73,7 +73,7 @@ model Address {
   street    String  @db.VarChar(128)
   houseNr   String  @db.VarChar(12)
   zip       String  @db.VarChar(8)
-  place     String  @db.VarChar(120)
+  city      String  @db.VarChar(120)
   country   String  @db.VarChar(100)
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId String  @unique

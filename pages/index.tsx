@@ -1,11 +1,12 @@
+import CreateProfile from '@/components/profile/CreateProfile'
+import { getUserProfile } from '@/lib/data/user'
 import { Inter, Montserrat } from '@next/font/google'
-import { PrismaClient, Profile } from '@prisma/client'
+import { Profile } from '@prisma/client'
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
 import { getSession } from 'next-auth/react'
 import Head from 'next/head'
 
 import type { Session } from 'next-auth'
-import CreateProfile from '@/components/profile/CreateProfile'
 const inter = Inter({ subsets: ['latin'], display: 'auto' })
 const monsterrat = Montserrat({ subsets: ['latin'], display: 'auto' })
 
@@ -17,8 +18,6 @@ type IndexProps = {
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const prisma = new PrismaClient()
-
   const session = await getSession(context)
 
   if (!session) {
@@ -29,11 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (
     }
   }
 
-  const profile = await prisma.profile.findUnique({
-    where: {
-      userId: session.user?.id!,
-    },
-  })
+  const profile = await getUserProfile(session)
 
   return {
     props: {
