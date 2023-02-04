@@ -8,3 +8,14 @@ export const getUserProfile = async (session: Session) => {
     },
   })
 }
+
+export const getUserProfileFull = async (session: Session) => {
+  return await prisma.profile.findUnique({
+    where: {
+      userId: session.user.id!,
+    },
+    include: {
+      address: true,
+    },
+  })
+}

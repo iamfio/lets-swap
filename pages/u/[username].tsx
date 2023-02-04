@@ -1,7 +1,15 @@
+import EditProfile from '@/components/profile/EditProfile'
 import { prisma } from '@/db/db'
 import { Address, Profile } from '@prisma/client'
-import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next'
+import {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  NextPage,
+} from 'next'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 export const getStaticProps: GetStaticProps = async ({
   params,
@@ -14,6 +22,7 @@ export const getStaticProps: GetStaticProps = async ({
       address: true,
     },
   })
+
   return {
     props: {
       profile,
@@ -33,12 +42,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-const ProfilePage = ({
-  profile,
-}: {
+type ProfilePageProps = {
   profile: Profile & { address: Address }
-}) => {
+}
+
+const ProfilePage: NextPage<ProfilePageProps> = ({ profile }) => {
+  const [editProfile, setEditProfile] = useState<boolean>(false)
   const router = useRouter()
+  const { data: session } = useSession()
 
   if (router.isFallback) {
     return (
@@ -50,9 +61,43 @@ const ProfilePage = ({
 
   return (
     <div>
-      <h1>{profile.username}</h1>
-
-      <p>{profile.address?.street}</p>
+      <div className="flex justify-center mt-2 mb-8">
+        <h1 className="font-semibold mb-4">
+          Hello, {session?.user.name} <span className="text-3xl">👋</span>
+        </h1>
+      </div>
+      <div className="flex justify-around columns-2">
+        <div className="flex flex-col">
+          <p>
+            {profile.address.street} {profile.address.houseNr}
+          </p>
+          <p>
+            {profile.address.zip} {profile.address.city}
+          </p>
+          <p>{profile.address.country}</p>
+          <p>{profile.phoneNr}</p>
+          <p>{session?.user.email}</p>
+          <div>
+            <button onClick={() => setEditProfile(true)} className="btn">
+              Edit Profile
+            </button>
+            {editProfile && (
+              <>
+                <EditProfile />
+                <button onClick={() => setEditProfile(false)} className="btn">
+                  Cancel
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col items-center">
+          <h2>Products</h2>
+          <div>
+            <div>You have no items on your list.</div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

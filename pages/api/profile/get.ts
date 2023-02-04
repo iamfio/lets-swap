@@ -1,4 +1,4 @@
-import { getUserProfile } from '@/lib/data/user'
+import { getUserProfileFull } from '@/lib/data/user'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 
@@ -11,7 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(401).json({ message: 'Invalid Session' })
     }
 
-    const profile = await getUserProfile(session)
+    const profile = await getUserProfileFull(session)
 
     return res.status(201).json(profile)
   } catch (error) {
