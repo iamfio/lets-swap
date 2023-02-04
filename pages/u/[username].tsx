@@ -60,14 +60,14 @@ const ProfilePage: NextPage<ProfilePageProps> = ({ profile }) => {
   }
 
   return (
-    <div>
-      <div className="flex justify-center mt-2 mb-8">
-        <h1 className="font-semibold mb-4">
+    <div className="">
+      <div className="flex items-center justify-center mt-2 mb-8">
+        <h1 className="mb-4 font-semibold">
           Hello, {session?.user.name} <span className="text-3xl">👋</span>
         </h1>
       </div>
-      <div className="flex justify-around columns-2">
-        <div className="flex flex-col">
+      <div className="">
+        <div className="flex flex-col items-center w-full">
           <p>
             {profile.address.street} {profile.address.houseNr}
           </p>
@@ -75,28 +75,31 @@ const ProfilePage: NextPage<ProfilePageProps> = ({ profile }) => {
             {profile.address.zip} {profile.address.city}
           </p>
           <p>{profile.address.country}</p>
-          <p>{profile.phoneNr}</p>
-          <p>{session?.user.email}</p>
-          <div>
-            <button onClick={() => setEditProfile(true)} className="btn">
+          <p className='my-2'>{profile.phoneNr}</p>
+          <p className='my-2'>{session?.user.email}</p>
+          {/* <div> */}
+          {!editProfile && (
+            <button onClick={() => setEditProfile(true)} className="my-4 btn">
               Edit Profile
             </button>
-            {editProfile && (
-              <>
-                <EditProfile />
-                <button onClick={() => setEditProfile(false)} className="btn">
-                  Cancel
-                </button>
-              </>
-            )}
-          </div>
+          )}
+          {editProfile && (
+            <>
+              <EditProfile setEditProfile={setEditProfile} />
+
+              <button onClick={() => setEditProfile(false)} className="my-4 btn">
+                Cancel
+              </button>
+            </>
+          )}
+          {/* </div> */}
         </div>
-        <div className="flex flex-col items-center">
+        {/* <div className="flex">
           <h2>Products</h2>
           <div>
             <div>You have no items on your list.</div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )
